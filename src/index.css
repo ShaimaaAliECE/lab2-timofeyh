@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  gap: 2px;
+  background-color: cornflowerblue;
+}
+
+.cell {
+  height: 50px;
+  width: 50px;
+  background-color: cornflowerblue;
+}
+
+.piece {
+  height: 50px;
+  width: 50px;
+  background-color: gray;
+  border-radius: 50%;
+  display: inline-block;
+} 
