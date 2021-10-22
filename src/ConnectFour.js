@@ -28,13 +28,15 @@ export const ConnectFour = (props) => {
     },[props.rows, props.cols]);
 
     useEffect(() => {
-        console.log(connect4.rows);
         if (connect4.winner !== null) {
-            console.log(connect4.winner.getName());
-            props.gameOver(connect4.winner.id);
+            if (connect4.winner.id >= 0) {
+                props.gameOver(connect4.winner.id + 1);
+                return;
+            }
         }
         if (turn >= props.rows*props.cols) {
             props.gameOver(Player.nullPlayer().id);
+            return;
         }   
         if (cell) {
             if (!connect4.grid[cell.row][cell.col].isOpen()) return;
@@ -51,7 +53,6 @@ export const ConnectFour = (props) => {
 
     let board = () => {
         if (connect4.grid.length === 0) return;
-        console.log(connect4.grid)
         let out = connect4.grid.map(
             rows =>
             rows.map(
@@ -80,7 +81,7 @@ export const ConnectFour = (props) => {
                   className="player"
                   style={{borderColor: highlightPlayer(player, props.players, turn)}}
                 >
-                  {player.getName()}
+                  {player.name}
                   <div className="playerToken" style={{backgroundColor: player.color}}></div>
                 </label>
         );

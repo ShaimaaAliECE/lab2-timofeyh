@@ -19,7 +19,7 @@ class Player {
         return this.name;
     }
 
-    win() {
+    win = () => {
         this.wins++
         return this.wins
     }

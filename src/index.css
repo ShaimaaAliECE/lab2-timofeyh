@@ -61,16 +61,21 @@ code {
 }
 
 .winscreen {
-  display: inline-block;
-  position: relative;
-  float: none;
+  position: absolute;
+  display: grid;
+  grid-template-columns: auto;
   z-index: 20;
   left: 1vw/2;
-  top: 50px;
-  height: 400px;
-  width: 200px;
+  top: 30px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 0;
+  padding-bottom: 40%;
+  width: 30%;
   margin: auto;
   background-color: lightseagreen;
+  opacity: 90%;
+  gap: 40px;
 }
 
 .player {
@@ -79,7 +84,7 @@ code {
   width: max-content;
   padding: 5px;
   height: 30px;
-  overflow: auto;
+  overflow:visible;
   border-radius: 25%;
   border: blue 5px solid;
 }
@@ -105,9 +110,10 @@ code {
   grid-template-columns: auto;
   grid-template-rows: auto;
   background-color: lightblue;
+  border: blue solid 5px;
 }
 
-.titleText {
+.titleText, .winText {
   display: inline-block;
   position: relative;
   width: 500px;
@@ -117,6 +123,18 @@ code {
   text-align: center;
   font-weight: bold;
 } 
+
+.winText {
+  padding-top: 30px;
+  width: 90%;
+  height: auto;
+  margin: auto;
+  font-size:200%;
+  text-align: center;
+  font-weight: bold;
+  overflow-y: visible;
+}
+
 
 .currentSize {
   display: inline-block;
@@ -140,15 +158,21 @@ code {
   height: min-content;
 }
 
-.addPlayer {
+.addPlayer, .playerList {
   display: grid;
   position: relative;
   margin: auto;
-  width: 400px;
+  width: 90%;
   grid-template-columns:auto auto auto;
   grid-template-rows: auto;
   gap: 5px;
   height: min-content;
+}
+
+.playerList {
+  width: max-content;
+  grid-template-columns: auto auto;
+  gap: 20px;
 }
 
 .gridBtn {
@@ -190,6 +214,18 @@ code {
   position: relative;
   width: 50px;
   height: 50px;
+  margin:auto;
+  padding: none;
+  background-color: cornflowerblue;
+  border-radius: 20%;
+  font-size: 150%;
+}
+
+.winBtn {
+  display: inline-block;
+  position: relative;
+  width: 60%;
+  height: 30px;
   margin:auto;
   padding: none;
   background-color: cornflowerblue;

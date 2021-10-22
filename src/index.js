@@ -5,75 +5,39 @@ import { ConnectFour } from './ConnectFour';
 import './index.css';
 
 const App = () =>  {
-  const [rows, setRows] = useState(20);
-  const [cols, setCols] = useState(12);
-  const [simple, setSimple] =useState(false);
-  const [players, setPlayers] = useState([]);
+  const [rows, setRows] = useState(6);
+  const [cols, setCols] = useState(7);
+  const [simple, setSimple] = useState(true);
+  const [players, setPlayers] = useState([new Player(0, 'Player1', 'red'), new Player(1, 'Player2', 'yellow')]);
   const [gameOver, setGameOver] = useState(-2);
-  const [name, setName] = useState();
-  const [color, setColor] = useState();
+  const [newPlayer, setNewPlayer] = useState({});
 
   useEffect(() => {
-    if (gameOver > 0) {
-      setPlayers(p => [...p, {...p[gameOver-1]}]);
+    const addScore = (p, index, won) => {
+      let out  =[...p];
+      for (let i = 0; i < out.length; i++) {
+        let player = {...out[i]};
+        if (won) {
+          if (i === index) player.wins++;
+          else player.losses++;
+        } else player.ties++;
+        out[i] = player;
+      }
+      return out;
     }
+    if (gameOver > 0) {
+      setPlayers((p) => addScore(p, gameOver-1, true));
+    } else if (gameOver === -1) setPlayers((p) => addScore(p, gameOver-1, false));
+    else if (gameOver === -3) setGameOver(0);
   },[gameOver]);
 
   useEffect(() => {
     if (!playersNormalized(players)) {
-       setPlayers(p => [...resetIDs(p)]);
+       setPlayers(p => resetIDs(p));
     }
-    return (console.log(players));
   },[players]);
 
-  const playersNormalized = (list) => {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].id !== i) return false;
-    }
-    return true;
-  };
-
-  const togglePopUp = (num) => {
-    if (num === 0) return false;
-    return true;
-  }
-
-  const resetIDs = (list) => {
-    let out = [...list];
-    for (let i = 0; i < out.length; i++) {
-      out[i].id = i;
-    }
-    return out;
-  }
-
-  const gameOverMessage = (num) => {
-    if (num > 0) return "Winner: " + players[num-1].name;
-    if (num === -1) return "Draw";
-  }
-
-  const toggleSimpleCss = (isOn) => {
-    if (isOn) return 'green';
-    else return 'cornflowerblue';
-  };
-
-  const removePlayer = (id, list) => {
-    let out = [];
-    for (let i = 0; i < list.length; i++) {
-      if (list[i].id !== id) out.push({...list[i]});
-    }
-    return out;
-  };
-
-  const addPlayer = (pName, pColor, list) => {
-    let out = [...list, new Player(list.length, pName, pColor)];
-    console.log(pName);
-    console.log(pColor);
-    console.log(out);
-    
-    return out;
-  } 
-
-  const listPlayers = (list) => {
+  let listPlayers = (list) => {
     if (list.length === 0) return;
     let out = list.map(
       p => 
@@ -81,30 +45,53 @@ const App = () =>  {
           key={p.id} 
           className="player"
         >
-          {p.name}
+          {p.name} W/D/L: <br></br> {p.wins}/{p.ties}/{p.losses}
           <button 
             className="playerToken" 
             style={{backgroundColor: p.color}}
-            onClick={() => setPlayers(player => removePlayer(p.id, player))}
+            onClick={() => setPlayers(player => player = removePlayer(p.id, player))}
           > - </button>
         </label>
       );
     return out;
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setPlayers(player => ([...addPlayer(newPlayer.name, newPlayer.color, player)]))
+    setNewPlayer({name: '', color: ''})
+  }
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const val = event.target.value;
+    setNewPlayer(vals => ({...vals, [name] : val}))
+  }
 
   let renderScreen = () => {
     let out;
-    if (gameOver >= -1) {
+    if (gameOver === -1 || gameOver > 0) {
+      console.log(gameOver)
+      console.log(players[gameOver-1])
       out = (
         <>
-            <ConnectFour rows={rows} cols={cols} simple={simple} players={players} gameOver={(player) => setGameOver(player)}/>
-          <div
+            <ConnectFour rows={rows} cols={cols} simple={simple} players={players} gameOver={() => null} reset={gameOver}/>
+          <span
             className="winscreen" 
-            hidden={togglePopUp(gameOver)}
           >
-            <label>{gameOverMessage(gameOver)}</label>
-            <button className="player"></button>
-          </div>
+            <text className="winText">{gameOverMessage(gameOver, players)}</text>
+            <button 
+              className="winBtn"
+              onClick={() => setGameOver(-3)}
+            >
+            Play Again
+            </button>
+            <button 
+              className="winBtn"
+              onClick={() => setGameOver(-2)}
+            >
+            Main Menu
+            </button>
+          </span>
         </>
       );
     } else if (gameOver === -2) {
@@ -114,7 +101,7 @@ const App = () =>  {
             <label className="currentSize">{'('+cols+' x '+rows+')'}</label>
             <button 
               className="playBtn"
-              onClick={() => setGameOver((c) => {c = 0})}
+              onClick={() => setGameOver(c => c = 0)}
             > Play </button>
             <button 
               className="modeBtn"
@@ -141,31 +128,36 @@ const App = () =>  {
                 onClick={() => setRows(r => (r+1))}
               > + </button>
             </span>
-            <form className="addPlayer">
+            <form className="addPlayer" onSubmit={handleSubmit}>
               <input 
                 className="inputs" 
                 type="text" 
-                onChange={(e) => setName(n => n = ''+e.target.value+'')}
+                name="name"
+                value={newPlayer.name || ""}
+                onChange={handleChange}
               />
               <input 
                 className="inputs"
+                name="color"
                 type="text"
-                style={{color:color}}
-                onChange={(e) => setColor(color => color = ''+e.target.value+'')}
+                style={{color:newPlayer.color || ""}}
+                value={newPlayer.color}
+                onChange={handleChange}
               />
               <button 
+                type="submit"
                 className="playersBtn"
-                onClick={() => setPlayers(p =>[...addPlayer(name, color, p)])}
               > + </button>
             </form>
-            <div className="addPlayer">
-            {listPlayers(players)}
+            <div className="playerList">
+              {listPlayers(players)}
             </div>
           </div>
       );
-    } else {
-      out = (<ConnectFour rows={rows} cols={cols} simple={simple} players={players} gameOver={(player) => setGameOver(player)}/>);
-    }
+    } else if (gameOver === 0) {
+      if (players.length >= 2)  out = <ConnectFour rows={rows} cols={cols} simple={simple} players={players} gameOver={(p) => setGameOver(g=> g = p)}/>;
+      else (setGameOver(-2));
+    } 
     return (
       <div className="container">
         {out}
@@ -175,6 +167,43 @@ const App = () =>  {
 
   return renderScreen();
 } 
+
+const playersNormalized = (list) => {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id !== i) return false;
+  }
+  return true;
+};
+
+const resetIDs = (list) => {
+  let out = [...list];
+  for (let i = 0; i < out.length; i++) {
+    out[i] = new Player(i, out[i].name, out[i].color)
+  }
+  return out;
+}
+
+const gameOverMessage = (num, list) => {
+  if (num > 0) return "Winner: " + list[num-1].name;
+  if (num === -1) return "Draw";
+}
+
+const toggleSimpleCss = (isOn) => {
+  if (isOn) return 'green';
+  else return 'cornflowerblue';
+};
+
+const removePlayer = (id, list) => {
+  let out = [];
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].id !== id) out.push({...list[i]});
+  }
+  return out;
+};
+
+const addPlayer = (pName, pColor, list) => {
+  return [...list, new Player(list.length, String(pName), String(pColor))];
+};
 
 ReactDOM.render(
   <React.StrictMode>
