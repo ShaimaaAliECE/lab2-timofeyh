@@ -1,35 +1,208 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Courier New', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  font-family: 'Courier New'
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
+.container {
+  display: block;
+  width: auto;
+  max-width: 1080px;
+  margin:auto;
+  padding:20px;
+  background-color: lavenderblush;
+}
+
 .grid {
   display: grid;
-  grid-template-columns: auto;
+  margin:auto;
+  width: min-content;
+  padding: 10px;
+  padding-bottom: 30px;
+  grid-template-columns: auto auto auto auto auto auto auto;
   grid-template-rows: auto;
-  gap: 2px;
+  gap: 8px;
   background-color: cornflowerblue;
+}
+
+.players {
+  display: grid;
+  margin:auto;
+  width: min-content;
+  padding: 20px 0px 10px;
+  grid-template-columns: auto auto auto auto auto auto auto;
+  grid-template-rows: auto;
+  gap: 8px;
+  background-color: lavenderblush;
 }
 
 .cell {
+  display: inline;
+  position: relative;
   height: 50px;
   width: 50px;
-  background-color: cornflowerblue;
-}
-
-.piece {
-  height: 50px;
-  width: 50px;
-  background-color: gray;
+  padding: 0;
+  margin: auto;
+  padding: 0px;
+  background-color: #333;
   border-radius: 50%;
   display: inline-block;
+}
+
+.winscreen {
+  display: inline-block;
+  position: relative;
+  float: none;
+  z-index: 20;
+  left: 1vw/2;
+  top: 50px;
+  height: 400px;
+  width: 200px;
+  margin: auto;
+  background-color: lightseagreen;
+}
+
+.player {
+  display: inline;
+  position: relative;
+  width: max-content;
+  padding: 5px;
+  height: 30px;
+  overflow: auto;
+  border-radius: 25%;
+  border: blue 5px solid;
+}
+
+.playerToken {
+  float: right;
+  position: relative;
+  margin-left: 10px;
+  height: 30px;
+  width: 30px;
+  background-color: #333;
+  border-radius: 50%;
+}
+
+.welcomeScreen {
+  display: grid;
+  position: relative;
+  width: min-content;
+  height: auto;
+  margin:auto;
+  padding-bottom: 50px;
+  padding-top: 20px;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  background-color: lightblue;
+}
+
+.titleText {
+  display: inline-block;
+  position: relative;
+  width: 500px;
+  height: 80px;
+  margin: auto;
+  font-size:400%;
+  text-align: center;
+  font-weight: bold;
 } 
+
+.currentSize {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  height: 40px;
+  margin: auto;
+  font-size:200%;
+  text-align: center;
+  font-weight: bold;
+  color:maroon;
+}
+
+.changeGrid {
+  display: grid;
+  position: relative;
+  margin: auto;
+  width: min-content;
+  grid-template-columns: repeat(6,auto);
+  grid-template-rows: auto;
+  height: min-content;
+}
+
+.addPlayer {
+  display: grid;
+  position: relative;
+  margin: auto;
+  width: 400px;
+  grid-template-columns:auto auto auto;
+  grid-template-rows: auto;
+  gap: 5px;
+  height: min-content;
+}
+
+.gridBtn {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height:50px;
+  padding:0;
+  border: 2px solid lightpink;
+  border-radius: 50%;
+  margin:auto;
+  text-align: center;
+  overflow:visible;
+}
+
+.updwnBtn {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height:40px;
+  margin:auto;
+  border-radius: 40%;
+}
+
+.modeBtn, .playBtn {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  height: 80px;
+  margin: auto;
+  background-color: cornflowerblue;
+  grid-column: 1;
+  border-radius: 20%;
+  font-size: 200%;
+}
+
+.playersBtn {
+  display: inline-block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin:auto;
+  padding: none;
+  background-color: cornflowerblue;
+  border-radius: 20%;
+  font-size: 150%;
+}
+
+.inputs {
+  display: inline-block;
+  position: relative;
+  width: 95%;
+  height: 60%;
+  top:15%;
+  font-size:100%;
+  border: 2px dotted lightpink;
+}

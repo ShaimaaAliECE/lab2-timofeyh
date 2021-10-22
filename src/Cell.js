@@ -1,32 +1,48 @@
+import { Player } from "./Player";
+
 class Cell {
-    value;
+    id;
+    player;
     row;
     col;
 
-    constructor(row, col) {
-        this.value = null;
+    constructor(id, row, col) {
+        this.id = id;
+        this.player = Player.nullPlayer();
         this.row = row;
         this.col = col;
     }
 
-    adjacentCells() {
+    adjacentCells = () => {
         let cells = [];
         for (let r = -1; r <= 1; r++) {
             for (let c = -1; c <= 1; c++) {
-                if (r == 0 && c == 0) continue;
+                if (r === 0 && c === 0) continue;
                 cells.push({row: this.row + r, col: this.col + c})
             }
         }
         return cells;
     }
 
-    isOpen() {
-        return this.value === null;
+    isOpen = () => {
+        return this.player.name === true;
     }
 
-    set(value) {
-        this.value = value;
+    setPlayer = (player) =>  {
+        this.player = {...player};
+    }
+
+    getColor = () => {
+        return this.player.color;
+    }
+
+    getId = () => {
+        return this.player.id;
+    }
+
+    getPlayer() {
+        return this.player;
     }
 }
 
-export {Cell};
+export {Cell}; 
